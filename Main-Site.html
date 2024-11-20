@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Page</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background: linear-gradient(45deg, #12c2e9, #c471ed, #f64f59);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        .download-box {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .download-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .download-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .progress-bar {
+            width: 0;
+            height: 4px;
+            background-color: #4CAF50;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            transition: width 0.5s ease;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0% { transform: translatey(0px); }
+            50% { transform: translatey(-20px); }
+            100% { transform: translatey(0px); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="download-box">
+            <h1>Download Zip File</h1>
+            <button class="download-button" onclick="startDownload()">Start Download</button>
+        </div>
+    </div>
+    <div class="progress-bar"></div>
+
+    <script>
+        function startDownload() {
+            const button = document.querySelector('.download-button');
+            const progressBar = document.querySelector('.progress-bar');
+
+            // Change button state immediately
+            button.disabled = true;
+            button.textContent = 'Downloading...';
+
+            // Set timeout to change button color and text
+            setTimeout(() => {
+                button.style.backgroundColor = 'blue';
+                button.textContent = 'Download Started!';
+            }, 1000);
+
+            // Create a link for file download
+            const downloadLink = 'https://raw.githubusercontent.com/Mahdi-Ziaaddini/Download-Site/refs/heads/main/Programing-Files.zip'
+            // Start the download
+            const download = document.createElement('a');
+            download.href = downloadLink;
+            download.download = ''; // Optional: If you want to specify a filename, put it here
+            document.body.appendChild(download);
+            download.click();
+            document.body.removeChild(download);
+        }
+
+        // Particle effect
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            const size = Math.random() * 5 + 2;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `${Math.random() * 100}vh`;
+            document.body.appendChild(particle);
+
+            const animation = particle.animate(
+                [
+                    { transform: 'translate(0, 0)' },
+                    { transform: `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)` }
+                ],
+                {
+                    duration: Math.random() * 3000 + 2000,
+                    easing: 'ease-out',
+                    iterations: Infinity,
+                    direction: 'alternate'
+                }
+            );
+
+            setTimeout(() => {
+                animation.cancel();
+                particle.remove();
+            }, 5000);
+        }
+
+        setInterval(createParticle, 200);
+    </script>
+</body>
+</html>
